@@ -1,7 +1,9 @@
+FROM golang as builder
+WORKDIR /home/go/
+COPY fileserv.go .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -o fileserver .
+
 FROM busybox
+COPY --from=builder /home/go/fileserver /usr/sbin
 
-COPY ./bin/* /usr/sbin/
-
-WORKDIR /usr/apps/web/
-
-CMD ["/usr/sbin/fileserver", "-d", "/usr/apps/web/"]
+CMD ["fileserver", "-d", "/usr/apps/web/"]
