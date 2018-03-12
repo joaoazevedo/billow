@@ -1,6 +1,6 @@
 FROM golang as builder
 WORKDIR /home/go/
-COPY fileserv.go .
+COPY ./fileserver.go .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -o fileserver .
 
 FROM busybox
